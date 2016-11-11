@@ -1,0 +1,9 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "dependencies": {
+    "async": "^2.1.2",
+    "hapi": "^15.2.0",
+    "hapi-swagger": "^7.4.0"
+  }
+}

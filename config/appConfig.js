@@ -5,9 +5,34 @@ var Confidence = require('confidence');
 var store = new Confidence.Store();
 var doc = {
     "$filter": "env",
+    "dev": {
+    server: {
+        "host": "0.0.0.0",
+            "port": 5000,
+            "labels":['api'],
+            routes: {
+            cors: true
+        }
+    },
+    defaultStorage: "FS",
+        swaggerOptions: {
+        'name': 'HappyFox',
+            'title': 'HappyFox API services',
+            host: "localhost:5000",
+            basePath:"http://localhost:5000",
+            schemes:['http'],
+            apiVersion: 'V0.0.1'
+    },
+    database: {
+        redis: {
+            host: 'localhost',
+                port: 6379
+        }
+    }
+},
    "$default": {
         server: {
-            "host": "0.0.0.0",
+            "host": "localhost",
             "port": 5000,
             "labels":['api'],
             routes: {
@@ -18,9 +43,10 @@ var doc = {
         swaggerOptions: {
             'name': 'HappyFox',
             'title': 'HappyFox API services',
-            host: "localhost:5000",
-            schemes:['http'],
-            apiVersion: 'V0.0.1'
+             host: "localhost:5000",
+            basePath:"http://localhost:5000",
+            documentationPath: "/",
+            version: 'V0.0.1'
         },
         database: {
             redis: {

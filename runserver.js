@@ -5,48 +5,55 @@ var Hapi = require('hapi');
 var Inert = require('inert');
 var Vision = require('vision');
 var appConfig = require('./config/appConfig')();
-var auth = require('./model/auth');
+var auth = require('./model/Auth');
 var Auth = new auth();
-var fs = require('fs');
 var authlib = require('./lib/auth/authHeader');
-const HapiSwagger = require('hapi-swagger');
+var  HapiSwagger = require('hapi-swagger');
 
 var server = new Hapi.Server();
 server.connection(appConfig.server);
 
-var apiplugin = function (server, options, next) {
+var apiplugin = {
 
-    server.auth.strategy('authheader', 'header-auth', {
-        allowQueryToken: true,              // optional, true by default
-        allowMultipleHeaders: true,        // optional, true by default
-        accessTokenName: 'authToken',    // optional, 'access_token' by default
-        validateFunc: function (authToken, callback) {
-            Auth.getSessionUser(authToken, function (err, res) {
-                console.log("done validation", err, res);
-                if (err) {
-                    return callback(true, null);
-                } else {
-                    return callback(null, res);
-                }
+    register : function (server, options, next) {
 
-            })
+        server.auth.strategy('authHeader', 'header-auth', {
+            allowQueryToken: true,              // optional, true by default
+            allowMultipleHeaders: true,        // optional, true by default
+            accessTokenName: 'authToken',    // optional, 'access_token' by default
+            validateFunc: function (authToken, callback) {
+                Auth.getSessionUser(authToken, function (err, res) {
+                    console.log("done validation", err, res);
+                    if (err) {
+                        return callback(true, null);
+                    } else {
+                        return callback(null, res);
+                    }
 
-        }
-    });
+                })
 
-    var routes = require('./config/routes')(server);
-    server.route(routes);
-    server.views({
-        engines: {
-            html: require('handlebars')
-        },
-        relativeTo: __dirname,
-        path: './views'
+            }
+        });
 
-    });
 
-    next();
-};
+        //server.views({
+        //    engines: {
+        //        html: require('handlebars')
+        //    },
+        //    relativeTo: __dirname,
+        //    path: './views'
+        //
+        //});
+
+        next();
+    }
+
+}
+
+apiplugin.register.attributes = {
+    name: 'AUTH',
+    version: '1.0.0'
+}
 
 
 server.register([
@@ -54,7 +61,7 @@ server.register([
     Vision,
     {
         register: HapiSwagger,
-        options: appConfig.swaggerOptions
+        //options: appConfig.swaggerOptions
     },
     {
         register: authlib
@@ -68,11 +75,10 @@ server.register([
 
     // Start the Server Command
     server.start(function () {
-
-
         console.log("Server (2.1) started");
 
     });
 });
-
+var routes = require('./config/routes')(server);
+server.route(routes);
 

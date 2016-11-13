@@ -94,6 +94,26 @@ USER.prototype.generateURID = function (cb) {
         if (err) {
            return  cb(true);
         }
+        return cb(null, count+"");
+    });
+};
+USER.prototype.setFavGenres = function (genres,cb) {
+    var hkey = keyprefix.USER + _uid;
+
+    rclient.hmset(hkey,"genres",JSON.stringify(genres), function (err, count) {
+        if (err) {
+           return  cb(true);
+        }
         return cb(null, count);
+    });
+};
+USER.prototype.getFavGenres = function (cb) {
+    var hkey = keyprefix.USER + _uid;
+
+    rclient.hget(hkey,"genres", function (err, count) {
+        if (err) {
+            return  cb(true);
+        }
+        return cb(null, JSON.parse(count));
     });
 };

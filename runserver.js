@@ -8,8 +8,6 @@ var appConfig = require('./config/appConfig')();
 var auth = require('./model/Auth');
 var Auth = new auth();
 var authlib = require('./lib/auth/authHeader');
-var  HapiSwagger = require('hapi-swagger');
-
 var server = new Hapi.Server();
 server.connection(appConfig.server);
 
@@ -35,16 +33,6 @@ var apiplugin = {
             }
         });
 
-
-        //server.views({
-        //    engines: {
-        //        html: require('handlebars')
-        //    },
-        //    relativeTo: __dirname,
-        //    path: './views'
-        //
-        //});
-
         next();
     }
 
@@ -59,10 +47,7 @@ apiplugin.register.attributes = {
 server.register([
     Inert,
     Vision,
-    {
-        register: HapiSwagger,
-        //options: appConfig.swaggerOptions
-    },
+
     {
         register: authlib
     }, apiplugin], {select: ['api']}, function (err) {

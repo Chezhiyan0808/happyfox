@@ -18,6 +18,8 @@ user.signin  = joi.object({
     email: joi.string().required(),
     password:joi.string().required()
 });
-
+user.setFav  = joi.object({
+    genres: joi.array().required()
+});
 
 module.exports = user;

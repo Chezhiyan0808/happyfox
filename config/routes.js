@@ -27,7 +27,7 @@ module.exports = function (server) {
             method: 'POST',
             path: '/user/signup',
             config: {
-
+                tags: ['api'],
                 handler: controller.user.signup,
                 validate: {
 
@@ -43,6 +43,7 @@ module.exports = function (server) {
             path: '/user/signin',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.user.signin,
                 validate: {
                     headers: joi.object({
@@ -58,12 +59,9 @@ module.exports = function (server) {
             method: 'POST',
             path: '/user/genacctkn',
             config: {
-                auth:'authHeader',
-                handler: controller.user.signin,
+                tags: ['api'],
+                handler: controller.user.genacctkn,
                 validate: {
-                    headers: joi.object({
-                        authorization: joi.string().required()
-                    }).unknown(),
                     payload: userschema.signin
 
                 },
@@ -77,8 +75,12 @@ module.exports = function (server) {
             path: '/user/setfavgenres',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.user.setFavGenres,
                 validate: {
+                    headers: joi.object({
+                        authorization: joi.string().required()
+                    }).unknown(),
                     payload: userschema.setFav
                 },
                 response: {
@@ -91,6 +93,7 @@ module.exports = function (server) {
             path: '/user/getrecomm',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.user.getRecomendations,
                 validate: {
                     headers: joi.object({
@@ -107,6 +110,7 @@ module.exports = function (server) {
             path: '/movie/addMovie',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.movies.addMovie,
                 validate: {
                     headers: joi.object({
@@ -121,6 +125,7 @@ module.exports = function (server) {
             path: '/movie/addReview',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.movies.addReview,
                 validate: {
                     headers: joi.object({
@@ -135,6 +140,7 @@ module.exports = function (server) {
             path: '/movie/addvote',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.movies.vote,
                 validate: {
                     headers: joi.object({
@@ -149,6 +155,7 @@ module.exports = function (server) {
             path: '/movie/getmoviedetails',
             config: {
                 auth:'authHeader',
+                tags: ['api'],
                 handler: controller.movies.getMovieByID,
                 validate: {
                     headers: joi.object({
@@ -164,6 +171,7 @@ module.exports = function (server) {
             method: 'GET',
             path: '/movie/gettrendingmovies',
             config: {
+                tags: ['api'],
                 handler: controller.movies.getTrendingMovies
 
             }

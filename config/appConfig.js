@@ -41,12 +41,12 @@ var doc = {
         },
         defaultStorage: "FS",
         swaggerOptions: {
-            'name': 'HappyFox',
-            'title': 'HappyFox API services',
-             host: "localhost:5000",
-            basePath:"http://localhost:5000",
-            documentationPath: "/",
-            version: 'V0.0.1'
+            info : {
+                'title': 'HappyFox API services',
+                version: 'V0.0.1'
+            },
+            basePath:"/",
+            documentationPath: "/"
         },
         database: {
             redis: {

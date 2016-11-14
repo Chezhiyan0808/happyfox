@@ -7,7 +7,6 @@ var Vision = require('vision');
 var appConfig = require('./config/appConfig')();
 var auth = require('./model/Auth');
 var Auth = new auth();
-var HapiSwagger = require('hapi-swagger');
 var authlib = require('./lib/auth/authHeader');
 var server = new Hapi.Server();
 server.connection(appConfig.server);
@@ -17,9 +16,9 @@ var apiplugin = {
     register: function (server, options, next) {
 
         server.auth.strategy('authHeader', 'header-auth', {
-            allowQueryToken: true,              // optional, true by default
-            allowMultipleHeaders: true,        // optional, true by default
-            accessTokenName: 'authToken',    // optional, 'access_token' by default
+            allowQueryToken: true, // optional, true by default
+            allowMultipleHeaders: true, // optional, true by default
+            accessTokenName: 'authToken', // optional, 'access_token' by default
             validateFunc: function (authToken, callback) {
                 Auth.getSessionUser(authToken, function (err, res) {
                     console.log("done validation", err, res);
@@ -28,43 +27,23 @@ var apiplugin = {
                     } else {
                         return callback(null, res);
                     }
-
-                })
-
+                });
             }
         });
 
         next();
     }
 
-}
+};
 
 apiplugin.register.attributes = {
     name: 'AUTH',
     version: '1.0.0'
-}
-
-const options = {
-    info: {
-        'title': 'Test API Documentation',
-        'version': '1'
-    },
-    documentationPath: "/",
-    basePath:"/"
-
 };
 
-server.register([
-    Inert,
-    Vision,
-    {
-        register: HapiSwagger,
-        options: appConfig.swaggerOptions
-    },
-
-    {
-        register: authlib
-    }, apiplugin], {select: ['api']}, function (err) {
+server.register([Inert, Vision, {
+    register: authlib
+}, apiplugin], { select: ['api'] }, function (err) {
 
     if (err) {
 
@@ -75,9 +54,10 @@ server.register([
     // Start the Server Command
     server.start(function () {
         console.log("Server (2.1) started");
-
     });
 });
 var routes = require('./config/routes')(server);
 server.route(routes);
 module.exports = server;
+
+//# sourceMappingURL=runserver-compiled.js.map

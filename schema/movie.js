@@ -23,7 +23,7 @@ movie.add_review = joi.object({
     "mvid":joi.string().required()
 })
 movie.vote = joi.object({
-    "type":joi.string().required(),
+    "type":joi.string().valid("up", "down").required(),
     "mvid":joi.string().required()
 })
 

@@ -160,7 +160,14 @@ module.exports = function (server) {
                 }
             }
         },
+        {
+            method: 'GET',
+            path: '/movie/gettrendingmovies',
+            config: {
+                handler: controller.movies.getTrendingMovies
 
+            }
+        }
     ];
     return routeTable;
 };

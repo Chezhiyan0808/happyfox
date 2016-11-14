@@ -130,4 +130,13 @@ Movie.prototype.getRecomendation = function (fav_arr, cb) {
             return cb(null,r);
         })
     }
+};
+Movie.prototype.getTrendingMovies = function(cb){
+    rclient.zrevrange(keyprefix.TRENDING,0,-1,function(e,r){
+        if(e || !r){
+            cb(null,[])
+        }else{
+            cb(null,r);
+        }
+    });
 }

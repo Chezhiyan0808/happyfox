@@ -84,6 +84,19 @@ movie.getMovieByID = function(req,reply){
 
     })
 
+};
+
+movie.getTrendingMovies = function(req,reply){
+    var Movmdl = new moviemdl();
+    Movmdl.getTrendingMovies(function(e,r){
+        if(e){
+            reply(strings.ERRORS.GET_RECOM_FAILED);
+        }else{
+            var succ = _.clone(strings.SUCCESS.SUCCESS);
+            succ.trending= r;
+            reply(succ);
+        }
+    })
 }
 
 
